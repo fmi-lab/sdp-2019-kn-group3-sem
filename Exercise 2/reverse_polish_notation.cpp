@@ -1,7 +1,7 @@
 #include<iostream>
 #include<stack>
 #include<cstring>
-#include<cmath>
+#include<math.h>
 using namespace std;
 
 bool number(char c)
@@ -13,7 +13,7 @@ bool number(char c)
     return false;
 }
 
-bool operand(char c)
+bool oper(char c)
 {
     if(c == '+' || c == '-' || c == '*' || c == '/' || c == '^')
     {
@@ -24,114 +24,112 @@ bool operand(char c)
 
 unsigned weight(char c)
 {
-    if (!operand(c))
-    {
-        return -1;
-    }
-    switch(c)
+    switch (c)
     {
     case '+':
     case '-':
         return 3;
+        break;
     case '*':
     case '/':
         return 2;
+        break;
     case '^':
         return 1;
+        break;
+    default:
+        return -1;
+        break;
     }
 }
 
-//bool bracket(char c)
-//{
-//    if(c == '(' || c == ')')
-//    {
-//        return true;
-//    }
-//    return false;
-//}
-
-void translate (const char* s, char* res)
+void translate(const char* str, string& res)
 {
-    string result = "";
-    stack<char> st;
-    for(int i = 0; s[i]; i++)
+    res.clear();
+    stack<char> stac;
+    for(int i = 0; str[i]; i++)
     {
-        if(number(s[i]))
+        if(number(str[i]))
         {
-            cout<<s[i];
-            result += s[i];
+            cout<<str[i];
+            res += str[i];
         }
-        else if(operand(s[i]))
+        else if(oper(str[i]))
         {
-            unsigned w = weight(s[i]);
-            while(!st.empty() && weight(st.top()) <= w)
+            while(!stac.empty() && weight(stac.top()) < weight(str[i]) && stac.top()!='(')
             {
-                cout<<st.top();
-                result += st.top();
-                st.pop();
+                cout<<stac.top();
+                res += stac.top();
+                stac.pop();
             }
-            st.push(s[i]);
+            stac.push(str[i]);
         }
-        else if(s[i] == '(')
+        else if(str[i] == '(')
         {
-            st.push(s[i]);
+            stac.push(str[i]);
         }
-        else if(s[i] == ')')
+        else if(str[i] == ')')
         {
-            while(st.top() != '(')
+            while(!stac.empty() && stac.top() != '(')
             {
-                cout<<st.top();
-                result += st.top();
-                st.pop();
+                cout<<stac.top();
+                res += stac.top();
+                stac.pop();
             }
-            st.pop();
+            stac.pop();
         }
     }
-    while(!st.empty())
+    while(!stac.empty())
     {
-        cout<<st.top();
-        result += st.top();
-        st.pop();
+        cout<<stac.top();
+        res += stac.top();
+        stac.pop();
     }
-//    strcpy(res, result);
 }
 
-int compute(const char* s)
+double calculate(const string& str)
 {
-    stack<int> st;
-    for(int i = 0; s[i]; i++){
-        if(number(s[i])){
-            st.push((int)s[i] - (int)'0');
-        } else if(operand(s[i])){
-            int value;
-            int second = st.top();
-            st.pop();
-            int first = st.top();
-            st.pop();
-            switch(s[i]){
-                case '+': value = first + second;
-                    break;
-                case '-': value = first - second;
-                    break;
-                case '*': value = first * second;
-                    break;
-                case '/': value = first / second;
-                    break;
-                case '^': value = pow(first, second);
+    stack<double> container;
+    for(const char& c : str)
+    {
+        if(number(c))
+        {
+            container.push((c-'0'));
+        }
+        else if(oper(c))
+        {
+            double second = container.top();
+            container.pop();
+            double first = container.top();
+            container.pop();
+            double result;
+            switch (c)
+            {
+            case '+':
+                result = first + second;
+                break;
+            case '-':
+                result = first - second;
+                break;
+            case '*':
+                result = first * second;
+                break;
+            case '/':
+                result = first / second;
+                break;
+            case '^':
+                result = pow(first, second);
+                break;
             }
-            st.push(value);
+            container.push(result);
         }
     }
-    cout<<st.size()<<endl;
-    return st.top();
+    return container.top();
 }
-
-
-
 
 int main()
 {
-    char* str;
-//    translate("(1+2)*3-4", str);
-    cout<<compute("12+3*4-");
+    string str;
+    translate("(1+2)*(3-4)^2", str);
+    cout<<endl<<calculate(str);
 }
