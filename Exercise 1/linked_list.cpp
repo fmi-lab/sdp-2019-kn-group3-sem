@@ -10,7 +10,8 @@ linked_list<T>::linked_list(const linked_list<T>& other): current(NULL)
 }
 
 template <typename T>
-void linked_list<T>::copy_list(const linked_list<T>& other){
+void linked_list<T>::copy_list(const linked_list<T>& other)
+{
     node<T>* p = other.first;
     node<T>* previous = p;
     while(p)
@@ -33,7 +34,8 @@ void linked_list<T>::copy_list(const linked_list<T>& other){
 }
 
 template <typename T>
-void linked_list<T>::del_list(){
+void linked_list<T>::del_list()
+{
     current = first;
     node<T>* next;
     while(current)
@@ -58,7 +60,8 @@ template <typename T>
 linked_list<T>& linked_list<T>::operator=(const linked_list<T>& other)
 {
 
-    if(this != &other){
+    if(this != &other)
+    {
         del_list();
         copy_list(other);
     }
@@ -66,75 +69,107 @@ linked_list<T>& linked_list<T>::operator=(const linked_list<T>& other)
 }
 
 template <typename T>
-void linked_list<T>::start_iter(){
+void linked_list<T>::start_iter()
+{
     current = first;
 }
 
 template <typename T>
-node<T>* linked_list<T>::next(){
+node<T>* linked_list<T>::next()
+{
     node<T>* curr = current;
     current = current->next;
     return curr;
 }
 
 template <typename T>
-T& linked_list<T>::get_current() const{
+T& linked_list<T>::get_current() const
+{
     return current->value;
 }
 
 template <typename T>
-void linked_list<T>::add_last(const T& val){
+void linked_list<T>::add_last(const T& val)
+{
     node<T>* temp = new node<T>;
     temp->value = val;
     temp->next = NULL;
-    if(first == NULL){
+    if(last == NULL)
+    {
         first = temp;
+        last = temp;
     }
-    last->next = temp;
-    last = temp;
+    else
+    {
+        last->next = temp;
+        last = temp;
+    }
 }
 
 template <typename T>
-void linked_list<T>::move_n_pos(node<T>*& ptr, const size_t& n){
-    for(int i = 0; i<n && ptr; i++){
+void linked_list<T>::move_n_pos(node<T>*& ptr, const size_t& n)
+{
+    for(int i = 0; i<n && ptr; i++)
+    {
         ptr = ptr->next;
     }
 }
 
 template <typename T>
-void linked_list<T>::add_element_at(const T& val, const size_t& pos){
+void linked_list<T>::add_element_at(const T& val, const size_t& pos)
+{
     node<T>* iter = first;
-    for(int i = 0; i<pos-1 && iter; i++){
+    for(int i = 0; i<pos-1 && iter; i++)
+    {
         iter = iter->next;
     }
     node<T>* p = new node<T>;
     p->value = val;
     p->next = iter->next;
-    if(iter == last){
+    if(iter == last)
+    {
         last = p;
     }
-    if(first == NULL){
+    if(first == NULL)
+    {
         first = p;
     }
     iter->next = p;
 }
 
 template <typename T>
-node<T>* linked_list<T>::operator[](int n){
+node<T>* linked_list<T>::operator[](int n) const
+{
     node<T>* result = first;
-    for(int i = 0; i<n && result; i++){
+    for(int i = 0; i<n && result; i++)
+    {
         result = result->next;
     }
     return result;
 }
 
-//template <typename T>
-//void remove_element_from(const size_t& pos){
-//    node<T>*
-//}
+template <typename T>
+void linked_list<T>::remove_element_from(const size_t& pos){
+    node<T>* temp = this->operator[](pos-1);
+    node<T>* p = temp->next->next;
+    delete temp->next;
+    temp->next = p;
+}
 
-int main() {
+int main()
+{
+    linked_list<int> l;
+    l.add_last(5);
+    l.add_last(1);
+    l.add_last(2);
+    l.add_last(-5);
 
+    cout<<l[1]->value;
+
+    l.remove_element_from(6);
+
+
+    cout<<l[1]->value;
 }
 
 

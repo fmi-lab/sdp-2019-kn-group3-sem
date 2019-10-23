@@ -32,5 +32,5 @@ public:
     void remove_element_from(const size_t&);
 
     void move_n_pos(node<T>*&, const size_t&);
-    node<T>* operator[](int);
+    node<T>* operator[](int) const;
 };
