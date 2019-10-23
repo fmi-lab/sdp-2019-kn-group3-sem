@@ -10,7 +10,7 @@ linked_list<T>::linked_list(const linked_list<T>& other): current(NULL)
 }
 
 template <typename T>
-void copy_list(const linked_list<T>& other){
+void linked_list<T>::copy_list(const linked_list<T>& other){
     node<T>* p = other.first;
     node<T>* previous = p;
     while(p)
@@ -33,13 +33,7 @@ void copy_list(const linked_list<T>& other){
 }
 
 template <typename T>
-linked_list<T>::~linked_list()
-{
-    del_list();
-}
-
-template <typename T>
-void linked_list<T>::del(){
+void linked_list<T>::del_list(){
     current = first;
     node<T>* next;
     while(current)
@@ -54,11 +48,18 @@ void linked_list<T>::del(){
 }
 
 template <typename T>
+linked_list<T>::~linked_list()
+{
+    del_list();
+}
+
+
+template <typename T>
 linked_list<T>& linked_list<T>::operator=(const linked_list<T>& other)
 {
 
     if(this != &other){
-        del();
+        del_list();
         copy_list(other);
     }
     return *this;
@@ -119,7 +120,7 @@ void linked_list<T>::add_element_at(const T& val, const size_t& pos){
 }
 
 template <typename T>
-node<T>* linked_list<T>::operator[](int){
+node<T>* linked_list<T>::operator[](int n){
     node<T>* result = first;
     for(int i = 0; i<n && result; i++){
         result = result->next;
@@ -127,10 +128,10 @@ node<T>* linked_list<T>::operator[](int){
     return result;
 }
 
-template <typename T>
-void remove_element_from(const size_t& pos){
-    node<T>*
-}
+//template <typename T>
+//void remove_element_from(const size_t& pos){
+//    node<T>*
+//}
 
 int main() {
 

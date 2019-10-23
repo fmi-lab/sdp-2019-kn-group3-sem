@@ -1,6 +1,3 @@
-#ifndef LINKED_LIST_HEADER
-#define LINKED_LIST_HEADER
-
 #include<iostream>
 
 using namespace std;
@@ -19,7 +16,7 @@ private:
     node<T>* current;
 
     void del_list();
-    void copy_list(const linked_list<T>&){
+    void copy_list(const linked_list<T>&);
 
 public:
     linked_list();
@@ -33,8 +30,7 @@ public:
     void add_last(const T&);
     void add_element_at(const T&, const size_t&);
     void remove_element_from(const size_t&);
+
+    void move_n_pos(node<T>*&, const size_t&);
     node<T>* operator[](int);
-
 };
-
-#endif // LINKED_LIST_HEADER
