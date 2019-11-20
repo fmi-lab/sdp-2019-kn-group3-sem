@@ -11,7 +11,7 @@ struct tree{
     int weight;
     vector<tree<T>*> children;
 
-    void copy(tree<T>& other);
+    void copy(const tree<T>& other);
     void del();
 
     tree(const tree<T>&);

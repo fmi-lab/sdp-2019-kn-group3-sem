@@ -1,6 +1,9 @@
 #include"tree.h"
 
 template <typename T>
+using Predicate = bool (*)(T const&);
+
+template <typename T>
 tree<T>::tree(T value, int weight): value(value), weight(weight){}
 
 template <typename T>
@@ -51,7 +54,7 @@ void tree<T>::print(size_t level)const{
 }
 
 template <typename T>
-void tree<T>::copy(tree<T>& other){
+void tree<T>::copy(const tree<T>& other){
     value = other.value;
     weight = other.weight;
     for(tree<T>* child : other.children){
@@ -77,8 +80,30 @@ tree<T>& tree<T>::operator=(const tree<T>& other){
 
 template <typename T>
 tree<T>::~tree(){
-    cout<<"~tree()\n";
     remove_children();
+}
+
+template <typename T>
+void filter_helper(tree<T>& t, Predicate<T> p){
+    for(int i = 0; i<t.children.size(); i++){
+        filter_helper(*t.children[i], p);
+        if(!p(t.children[i]->value)){
+            t.remove_only_nth_child(i);
+            i--;
+        }
+    }
+}
+
+template <typename T>
+tree<T> filter(const tree<T>& t, Predicate<T> p){
+    tree<T> result(t);
+    filter_helper(result, p);
+    return result;
+}
+
+bool isOdd(int const& x)
+{
+    return x%2 != 0;
 }
 
 int main(){
@@ -91,11 +116,14 @@ int main(){
     t1.children[1]->add_child(5,25);
     t1.children[1]->add_child(6,30);
     t1.children[1]->add_child(7,35);
+    t1.children[2]->add_child(10,50);
+    t1.children[2]->add_child(11,55);
 
     t1.print();
 
-    t1.remove_only_nth_child(1);
+    tree<int> t2 = filter(t1, isOdd);
 
-    t1.print();
+    cout<<"--------\n";
+    t2.print();
 
 }
