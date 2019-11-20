@@ -33,6 +33,7 @@ void tree<T>::remove_only_nth_child(const size_t& pos){
         children.insert(children.begin() + i, grand_child);
         i++;
     }
+    children[pos]->children.clear();
     delete children[pos];
     children.erase(children.begin() + pos);
 }
@@ -76,6 +77,7 @@ tree<T>& tree<T>::operator=(const tree<T>& other){
 
 template <typename T>
 tree<T>::~tree(){
+    cout<<"~tree()\n";
     remove_children();
 }
 
@@ -83,10 +85,16 @@ int main(){
     tree<int> t1(1,5);
     t1.add_child(2,10);
     t1.add_child(3,15);
-    t1.children[0]->add_child(4,20);
-    t1.children[0]->add_child(5,25);
+    t1.add_child(8,40);
+    t1.add_child(9,45);
+    t1.children[1]->add_child(4,20);
+    t1.children[1]->add_child(5,25);
+    t1.children[1]->add_child(6,30);
+    t1.children[1]->add_child(7,35);
 
-    t1.remove_only_nth_child(0);
+    t1.print();
+
+    t1.remove_only_nth_child(1);
 
     t1.print();
 
