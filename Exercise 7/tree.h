@@ -22,6 +22,8 @@ struct tree{
     void add_child(const T&, const int&);
     void remove_children();
     void remove_nth_child(const size_t&);
+    T find_biggest_element()const;
+    /// map, filter, reduce;
 
     void print(size_t = 0)const;
 };
