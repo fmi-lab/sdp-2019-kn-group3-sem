@@ -9,7 +9,6 @@ void tree<T>::add_child(const T& value, const int& weight){
     children.push_back(child);
 }
 
-
 template <typename T>
 void tree<T>::remove_children(){
     while(!children.empty()){
@@ -79,7 +78,6 @@ template <typename T>
 tree<T>::~tree(){
     remove_children();
 }
-
 
 int main(){
     tree<int> t1(1,5);
