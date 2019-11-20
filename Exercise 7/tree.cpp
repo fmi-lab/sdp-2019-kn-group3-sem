@@ -27,6 +27,18 @@ void tree<T>::remove_nth_child(const size_t& pos){
 }
 
 template <typename T>
+void tree<T>::remove_only_nth_child(const size_t& pos){
+    int i = pos+1;
+    tree<T>* child = children[pos];
+    for(tree<T>* grand_child : child->children){
+        children.insert(children.begin() + i, grand_child);
+        i++;
+    }
+    delete children[pos];
+    children.erase(children.begin() + pos);
+}
+
+template <typename T>
 void tree<T>::print(size_t level)const{
     for(int i = 0; i<level; i++){
         cout<<'\t';
@@ -49,20 +61,35 @@ void tree<T>::copy(tree<T>& other){
     }
 }
 
-//template <typename T>
-//tree(const tree<T>& other){
-//
-//}
+template <typename T>
+tree<T>::tree(const tree<T>& other){
+    copy(other);
+}
+
+template <typename T>
+tree<T>& tree<T>::operator=(const tree<T>& other){
+    if(this != &other){
+        remove_children();
+        copy(other);
+    }
+    return *this;
+}
+
+template <typename T>
+tree<T>::~tree(){
+    remove_children();
+}
+
 
 int main(){
     tree<int> t1(1,5);
     t1.add_child(2,10);
     t1.add_child(3,15);
     t1.children[0]->add_child(4,20);
+    t1.children[0]->add_child(5,25);
 
-    tree<int> t2(5,25);
-    t2.copy(t1);
+    t1.remove_only_nth_child(0);
 
-    t2.print();
+    t1.print();
 
 }
